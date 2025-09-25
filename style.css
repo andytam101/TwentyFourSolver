@@ -1,3 +1,8 @@
 .math-text {
     font-family: "Times New Roman", "STIX Math", "Cambria Math", serif;
 }
+
+.auto-width {
+    display: inline-block;
+    width: auto;
+}
