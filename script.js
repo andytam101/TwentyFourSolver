@@ -2,19 +2,29 @@ const OPERATORS = {
     add: (a, b) => a + b,
     sub: (a, b) => a - b,
     mul: (a, b) => a * b,
-    div: (a, b) => a / b
-    
+    div: (a, b) => a / b,
+    pow: (a, b) => a ** b,
+    root: (a, b) => b ** (1 / a),
+    log: (a, b) => Math.log(b) / Math.log(a)
 }
-const SYMBOL = { add: '+', sub: '-', mul: '*', div: '/' };
+const SYMBOL = { add: '+', sub: '-', mul: '*', div: '/', pow: "^", root: "&#8730", log: "log" };
 
-const allowedOperators = ["add", "mul", "sub", "div"]
+const allowedOperators = ["add", "mul", "sub", "div", "pow", "root", "log"]
 
 const isCommutative = {
     add: true,
     sub: false,
     mul: true,
     div: false,
+    pow: false,
+    root: false,
+    log: false,
 }
+
+const equalTo = (value, target, threshold = 0.0001) => {
+    return (value <= target + threshold) && (value >= target - threshold)
+}
+
 
 const solve = (numbers, target=24) => {
     const bfsQueue = [[numbers, [numbers], []]]
@@ -25,7 +35,7 @@ const solve = (numbers, target=24) => {
         const history = currentNode[1]
         const operations = currentNode[2]
         if (current.length == 1) {
-            if (current[0] == target) {
+            if (equalTo(current[0], target)) {
                 return { status: "Success", data: { history: history, operations: operations } }
             } else continue
         } 
@@ -89,7 +99,7 @@ const removeOuterBrackets = expr => expr.slice(1, -1)
 
 const displaySuccess = equation => {
     $("#fail-div").attr("hidden", true)
-    $("#results-div").text(equation)
+    $("#results-div").html(equation)
     $("#results-div").attr("hidden", false)
 }
 
